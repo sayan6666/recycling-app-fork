@@ -3,6 +3,11 @@ import { openDb } from "../opendb";
 import { cookies } from "next/headers"
 import { UserProfile } from "@/shared/types"
 
+export async function getPoints() {
+    const db = await openDb();
+    const points = await db.all("SELECT * FROM points");
+    return points;
+}
 
 export async function getSession() {
     const nextCookies = await cookies();

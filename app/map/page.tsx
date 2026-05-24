@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import { getPlaces } from "@/shared/api/places";
 import type { Place, WasteType } from "@/shared/types/place";
@@ -14,6 +15,22 @@ const wasteOptions: Array<WasteType | "all"> = [
   "electronics",
 ];
 
+const Map = dynamic(() => import("@/app/lib/map"), {
+    ssr: false,
+    loading: () => (
+        <div style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f0f0f0'
+        }}>
+            Loading
+        </div>
+    )
+});
+
 export default function MapPage() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [search, setSearch] = useState("");
@@ -26,7 +43,6 @@ export default function MapPage() {
   return (
     <section>
       <h1>Карта пунктов приёма</h1>
-      <p>Пока вместо настоящей карты используем список точек и фильтры.</p>
 
       <div
         style={{ display: "flex", gap: 12, margin: "16px 0", flexWrap: "wrap" }}
@@ -52,8 +68,8 @@ export default function MapPage() {
         </select>
       </div>
 
-      <div style={{ marginBottom: 20, padding: 16, background: "#f5f5f5" }}>
-        Здесь позже будет интерактивная карта.
+          <div style={{ width: 1000, height: 1000, marginBottom: 20, padding: 16, background: "#f5f5f5" }}>
+              <Map selectedFilters={wasteType} search={search} />
       </div>
 
       <div style={{ display: "grid", gap: 12 }}>
