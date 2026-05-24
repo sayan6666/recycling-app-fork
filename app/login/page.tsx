@@ -1,6 +1,18 @@
+"use client"
 import Link from "next/link";
+import { handleLogin } from "@/app/lib/handler"
+import { useActionState } from "react"
+
+const initialState = {
+    success: "",
+    errors: {
+        email: "",
+        password: "",
+    }
+};
 
 export default function LoginPage() {
+  const [state, formAction] = useActionState(handleLogin, initialState);
   return (
     <main className="auth-shell">
       <section className="auth-mobile-card">
@@ -10,9 +22,9 @@ export default function LoginPage() {
 
         <h1 className="auth-heading">Вход</h1>
 
-        <form className="auth-form">
-          <input type="email" placeholder="Email" className="auth-field" />
-          <input type="password" placeholder="Пароль" className="auth-field" />
+              <form className="auth-form" action={formAction}>
+          <input type="email" name="email" placeholder="Email" className="auth-field" />
+          <input type="password" name="password" placeholder="Пароль" className="auth-field" />
 
           <button type="submit" className="auth-primary-btn">
             Войти

@@ -1,6 +1,21 @@
+'use client'
 import Link from "next/link";
+import { useActionState } from "react"
+import { handleRegistration } from "@/app/lib/handler"
+
+const initialState = {
+    success: "",
+    errors: {
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        password_repeat: "",
+    }
+};
 
 export default function RegisterPage() {
+    const [state, formAction] = useActionState(handleRegistration, initialState)
   return (
     <main className="auth-shell">
       <section className="auth-mobile-card">
@@ -10,12 +25,13 @@ export default function RegisterPage() {
 
         <h1 className="auth-heading">Регистрация</h1>
 
-        <form className="auth-form">
-          <input type="text" placeholder="Имя" className="auth-field" />
-          <input type="text" placeholder="Фамилия" className="auth-field" />
-          <input type="email" placeholder="Email" className="auth-field" />
-          <input type="password" placeholder="Пароль" className="auth-field" />
+              <form className="auth-form" action={formAction}>
+          <input type="text" name="name" placeholder="Имя" className="auth-field" />
+          <input type="text" name="surname" placeholder="Фамилия" className="auth-field" />
+          <input type="email" name="email" placeholder="Email" className="auth-field" />
+          <input type="password" name="password" placeholder="Пароль" className="auth-field" />
           <input
+            name="password_repeat"
             type="password"
             placeholder="Повторите пароль"
             className="auth-field"

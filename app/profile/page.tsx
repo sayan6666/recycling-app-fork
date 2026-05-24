@@ -1,3 +1,9 @@
+import { openDb } from "../opendb"
+import { getProfile, getSession } from "@/app/lib/actions"
+import { UserProfile } from "@/shared/types"
+
+const profile = await getProfile();
+
 export default function ProfilePage() {
   const reminders = [
     "Сдать макулатуру",
@@ -22,7 +28,6 @@ export default function ProfilePage() {
       status: "Запланировано",
     },
   ];
-
   return (
     <main className="eco-profile-page">
       <div className="eco-profile-container">
@@ -32,8 +37,8 @@ export default function ProfilePage() {
 
             <div className="eco-profile-user">
               <p className="eco-profile-kicker">Личный кабинет</p>
-              <h1>Алиса Новикова</h1>
-              <p className="eco-profile-email">a.novikova@gmail.com</p>
+              <h1>{profile[0]["name"]}</h1>
+              <p className="eco-profile-email">{profile[0]["email"]}</p>
             </div>
           </div>
 
