@@ -1,65 +1,159 @@
-import { notFound } from "next/navigation";
-import { getCompanyPlaceById } from "@/shared/api/company";
-import { getPoints, getCompany } from "@/app/lib/actions"
+import Link from "next/link";
+import { getPoints, getCompany } from "@/app/lib/actions";
 
-export default async function CompanyPlaceDetailsPage({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
-    const { id } = await params;
-    const points = await getPoints();
-    //const place = await getCompanyPlaceById(id);
-    const place = points[id-1];
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
 
-    if (!place) {
-        notFound();
-    }
+export default async function CompanyPlaceDetailsPage({ params }: PageProps) {
+  const { id } = await params;
+  const company = await getCompany();
+  let points = await getPoints();
 
+  const currentCompany = company?.[0];
+  points = points.filter(
+    (point) => point["company_id"] == currentCompany?.["id"],
+  );
+
+  const place = points.find((point) => String(point["id"]) === id);
+
+  if (!place) {
     return (
-        <section>
-            <h1>Управление точкой</h1>
-
-            <article
-                style={{
-                    border: "1px solid #ddd",
-                    borderRadius: 8,
-                    padding: 16,
-                    marginTop: 20,
-                }}
+      <main className="company-page">
+        <div className="company-container">
+          <section className="company-empty company-empty--wide">
+            <h1>Точка не найдена</h1>
+            <p>
+              Возможно, точка была удалена или не принадлежит текущей компании.
+            </p>
+            <Link
+              href="/company/places"
+              className="company-btn company-btn--secondary"
             >
-                <h2>{place["name"]}</h2>
-                <p>
-                    <strong>Адрес:</strong> {place["adress"]}
-                </p>
-                <p>
-                    <strong>График:</strong> {place["workhours"]}
-                </p>
-                <p>
-                    <strong>Статус:</strong> {place["status"]}
-                </p>
-                <p>
-                    <strong>Принимаемые отходы:</strong> {place["type"]}
-                </p>
-            </article>
-
-            <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
-                <button
-                    style={{ padding: 12, border: "1px solid #ccc", borderRadius: 8 }}
-                >
-                    Редактировать информацию
-                </button>
-                <button
-                    style={{ padding: 12, border: "1px solid #ccc", borderRadius: 8 }}
-                >
-                    Обновить график работы
-                </button>
-                <button
-                    style={{ padding: 12, border: "1px solid #ccc", borderRadius: 8 }}
-                >
-                    Управлять принимаемыми отходами
-                </button>
-            </div>
-        </section>
+              Вернуться к списку
+            </Link>
+          </section>
+        </div>
+      </main>
     );
+  }
+
+  return (
+    <main className="company-page">
+      <div className="company-container">
+        <section className="company-section-head">
+          <div>
+            <p className="company-kicker">Управление точкой</p>
+            <h1>{place["name"]}</h1>
+            <p className="company-subtitle">
+              UI-заготовка для редактирования точки, координат, графика работы,
+              типов отходов и статуса публикации.
+            </p>
+          </div>
+
+          <div className="company-head-actions">
+            <Link
+              href="/company/places"
+              className="company-btn company-btn--secondary"
+            >
+              Все точки
+            </Link>
+
+            <button type="button" className="company-btn company-btn--primary">
+              Сохранить изменения
+            </button>
+          </div>
+        </section>
+
+        <section className="company-edit-layout">
+          <article className="company-panel">
+            <div className="company-panel__head">
+              <h2>Основная информация</h2>
+              <p>Поля для backend-подключения.</p>
+            </div>
+
+            <div className="company-form-grid">
+              <label className="company-field">
+                <span>Название точки</span>
+                <input type="text" defaultValue={place["name"]} />
+              </label>
+
+              <label className="company-field">
+                <span>Статус</span>
+                <select defaultValue={place["status"] || "active"}>
+                  <option value="active">active</option>
+                  <option value="inactive">inactive</option>
+                  <option value="draft">draft</option>
+                </select>
+              </label>
+
+              <label className="company-field company-field--full">
+                <span>Адрес</span>
+                <input type="text" defaultValue={place["adress"]} />
+              </label>
+
+              <label className="company-field">
+                <span>График работы</span>
+                <input type="text" defaultValue={place["workhours"]} />
+              </label>
+
+              <label className="company-field">
+                <span>Тип отходов</span>
+                <input type="text" defaultValue={place["type"]} />
+              </label>
+            </div>
+          </article>
+
+          <article className="company-panel">
+            <div className="company-panel__head">
+              <h2>Координаты и карта</h2>
+              <p>
+                Визуальная зона под будущую интеграцию карты и pin management.
+              </p>
+            </div>
+
+            <div className="company-map-placeholder">
+              <div className="company-map-placeholder__pin" />
+              <span>
+                Здесь второй разработчик подключит карту и выбор координат
+              </span>
+            </div>
+
+            <div className="company-form-grid company-form-grid--compact">
+              <label className="company-field">
+                <span>Широта</span>
+                <input type="text" placeholder="Например, 55.751244" />
+              </label>
+
+              <label className="company-field">
+                <span>Долгота</span>
+                <input type="text" placeholder="Например, 37.618423" />
+              </label>
+            </div>
+          </article>
+        </section>
+
+        <section className="company-panel">
+          <div className="company-panel__head">
+            <h2>Дополнительные действия</h2>
+            <p>Заготовки под удаление, публикацию и архивирование.</p>
+          </div>
+
+          <div className="company-secondary-actions">
+            <button type="button" className="company-btn company-btn--ghost">
+              Отправить на модерацию
+            </button>
+
+            <button type="button" className="company-btn company-btn--ghost">
+              Снять с публикации
+            </button>
+
+            <button type="button" className="company-btn company-btn--danger">
+              Удалить точку
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
 }

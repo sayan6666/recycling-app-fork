@@ -1,47 +1,120 @@
 import Link from "next/link";
-import { getCompanyPlaces } from "@/shared/api/company";
-import { getPoints, getCompany } from "@/app/lib/actions"
+import { getPoints, getCompany } from "@/app/lib/actions";
 
 export default async function CompanyPlacesPage() {
-    const places = await getCompanyPlaces();
-    const company = await getCompany();
-    let points = await getPoints();
-    points = points.filter(point => point["company_id"] == company[0]["id"])
+  const company = await getCompany();
+  let points = await getPoints();
+
+  const currentCompany = company?.[0];
+  points = points.filter(
+    (point) => point["company_id"] == currentCompany?.["id"],
+  );
+
   return (
-    <section>
-      <h1>Управление точками</h1>
-      <p>
-        Список точек компании с базовой информацией и переходом к управлению.
-      </p>
+    <main className="company-page">
+      <div className="company-container">
+        <section className="company-section-head">
+          <div>
+            <p className="company-kicker">Точки компании</p>
+            <h1>Управление точками</h1>
+            <p className="company-subtitle">
+              Экран для просмотра всех точек компании, редактирования карточек и
+              подготовки к подключению бэкенда.
+            </p>
+          </div>
 
-      <div style={{ display: "grid", gap: 12, marginTop: 20 }}>
-        {points.map((place) => (
-          <article
-            key={place.id}
-            style={{ border: "1px solid #ddd", borderRadius: 8, padding: 16 }}
-          >
-            <h2>{place["name"]}</h2>
-            <p>
-              <strong>Адрес:</strong> {place["adress"]}
-            </p>
-            <p>
-              <strong>График:</strong> {place["workhours"]}
-            </p>
-            <p>
-              <strong>Статус:</strong> {place["status"]}
-            </p>
-            <p>
-              <strong>Принимаемые отходы:</strong> {place["type"]}
-            </p>
+          <div className="company-head-actions">
+            <button type="button" className="company-btn company-btn--primary">
+              Создать точку
+            </button>
 
-            <div style={{ marginTop: 12 }}>
-              <Link href={`/company/places/${place["id"]}`}>
-                Открыть управление точкой
-              </Link>
+            <Link
+              href="/company"
+              className="company-btn company-btn--secondary"
+            >
+              Назад в кабинет
+            </Link>
+          </div>
+        </section>
+
+        <section className="company-toolbar">
+          <div className="company-search">
+            <input type="text" placeholder="Поиск по названию или адресу" />
+          </div>
+
+          <div className="company-filters">
+            <select defaultValue="all">
+              <option value="all">Все статусы</option>
+              <option value="active">Активные</option>
+              <option value="inactive">Неактивные</option>
+              <option value="draft">На модерации</option>
+            </select>
+
+            <select defaultValue="all">
+              <option value="all">Все типы отходов</option>
+              <option value="plastic">Пластик</option>
+              <option value="glass">Стекло</option>
+              <option value="paper">Бумага</option>
+              <option value="mixed">Смешанные</option>
+            </select>
+          </div>
+        </section>
+
+        <section className="company-cards-grid">
+          {points.length > 0 ? (
+            points.map((place) => (
+              <article key={place.id} className="company-place-card">
+                <div className="company-place-card__top">
+                  <div>
+                    <h2>{place["name"]}</h2>
+                    <p>{place["adress"]}</p>
+                  </div>
+
+                  <span className="company-status-badge">
+                    {place["status"] ?? "unknown"}
+                  </span>
+                </div>
+
+                <div className="company-place-card__details">
+                  <div>
+                    <span className="company-detail-label">График</span>
+                    <strong>{place["workhours"] || "Не указан"}</strong>
+                  </div>
+
+                  <div>
+                    <span className="company-detail-label">Отходы</span>
+                    <strong>{place["type"] || "Не указаны"}</strong>
+                  </div>
+                </div>
+
+                <div className="company-place-card__actions">
+                  <Link
+                    href={`/company/places/${place["id"]}`}
+                    className="company-btn company-btn--secondary"
+                  >
+                    Открыть управление
+                  </Link>
+
+                  <button
+                    type="button"
+                    className="company-btn company-btn--ghost"
+                  >
+                    Изменить статус
+                  </button>
+                </div>
+              </article>
+            ))
+          ) : (
+            <div className="company-empty company-empty--wide">
+              <h3>Точки еще не созданы</h3>
+              <p>
+                После подключения backend-части здесь появятся реальные карточки
+                точек компании.
+              </p>
             </div>
-          </article>
-        ))}
+          )}
+        </section>
       </div>
-    </section>
+    </main>
   );
 }

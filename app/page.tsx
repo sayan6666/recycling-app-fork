@@ -2,29 +2,60 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="home-page">
-      <section className="home-hero">
-        <div className="home-hero__content">
-          <span className="home-badge">EcoRoute</span>
-          <h1>Платформа переработки отходов</h1>
-          <p>
-            Находите ближайшие пункты приёма, изучайте категории отходов и
-            следите за своей экологической активностью в одном месте.
-          </p>
+    <main className="welcome-home">
+      <div className="welcome-home__overlay">
+        <header className="welcome-home__header">
+          <img src="/logo.png" alt="EcoRoute" className="welcome-home__logo" />
+        </header>
 
-          <div className="home-actions">
-            <Link href="/map" className="home-btn home-btn--primary">
-              Открыть карту
-            </Link>
-            <Link href="/catalog" className="home-btn home-btn--secondary">
-              Перейти в каталог
-            </Link>
-            <Link href="/profile" className="home-btn home-btn--secondary">
-              Профиль
-            </Link>
-          </div>
-        </div>
-      </section>
+        <section className="welcome-home__content">
+          <Link href="/catalog" className="welcome-home__start">
+            Начать
+          </Link>
+        </section>
+      </div>
+
+      <nav className="bottom-nav" aria-label="Основная навигация">
+        <Link href="/map" className="bottom-nav__item">
+          <img
+            src="/mapnavimage.png"
+            alt=""
+            className="bottom-nav__icon"
+            aria-hidden="true"
+          />
+          <span>Карта</span>
+        </Link>
+
+        <Link href="/catalog" className="bottom-nav__item">
+          <img
+            src="/katnavimage.png"
+            alt=""
+            className="bottom-nav__icon"
+            aria-hidden="true"
+          />
+          <span>Каталог</span>
+        </Link>
+
+        <Link href="/" className="bottom-nav__item bottom-nav__item--active">
+          <img
+            src="/recnavimage.png"
+            alt=""
+            className="bottom-nav__icon"
+            aria-hidden="true"
+          />
+          <span>Главная</span>
+        </Link>
+
+        <Link href="/profile" className="bottom-nav__item">
+          <img
+            src="/profilenavimage.png"
+            alt=""
+            className="bottom-nav__icon"
+            aria-hidden="true"
+          />
+          <span>Профиль</span>
+        </Link>
+      </nav>
     </main>
   );
 }
