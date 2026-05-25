@@ -10,7 +10,7 @@ export default function HomePage() {
 
         <section className="welcome-home__content">
           <Link href="/catalog" className="welcome-home__start">
-            Начать
+            Начать переработку!
           </Link>
         </section>
       </div>

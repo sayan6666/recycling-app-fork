@@ -18,15 +18,18 @@ export default async function CompanyPlacesPage() {
             <p className="company-kicker">Точки компании</p>
             <h1>Управление точками</h1>
             <p className="company-subtitle">
-              Экран для просмотра всех точек компании, редактирования карточек и
-              подготовки к подключению бэкенда.
+              Просматривайте все точки компании, редактируйте карточки и
+              управляйте опубликованными локациями.
             </p>
           </div>
 
           <div className="company-head-actions">
-            <button type="button" className="company-btn company-btn--primary">
+            <Link
+              href="/company/places/new"
+              className="company-btn company-btn--primary"
+            >
               Создать точку
-            </button>
+            </Link>
 
             <Link
               href="/company"
@@ -107,10 +110,7 @@ export default async function CompanyPlacesPage() {
           ) : (
             <div className="company-empty company-empty--wide">
               <h3>Точки еще не созданы</h3>
-              <p>
-                После подключения backend-части здесь появятся реальные карточки
-                точек компании.
-              </p>
+              <p>После создания точки они появятся здесь в виде карточек.</p>
             </div>
           )}
         </section>

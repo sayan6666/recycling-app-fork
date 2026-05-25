@@ -25,16 +25,18 @@ export default async function CompanyDashboardPage() {
             <p className="company-kicker">Кабинет компании</p>
             <h1>{currentCompany?.name ?? "Управление точками EcoRoute"}</h1>
             <p className="company-subtitle">
-              Создавайте новые точки для пользователей, обновляйте информацию о
-              действующих пунктах и передайте этот экран backend-разработчику
-              для подключения реального функционала.
+              Создавайте новые точки, обновляйте информацию о действующих
+              пунктах и управляйте своими локациями в одном месте.
             </p>
           </div>
 
           <div className="company-hero__actions">
-            <button className="company-btn company-btn--primary" type="button">
+            <Link
+              href="/company/places/new"
+              className="company-btn company-btn--primary"
+            >
               Создать точку
-            </button>
+            </Link>
 
             <Link
               href="/company/places"
@@ -66,11 +68,11 @@ export default async function CompanyDashboardPage() {
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Быстрые действия</h2>
-              <p>Заготовки под будущую бизнес-логику.</p>
+              <p>Основные действия компании.</p>
             </div>
 
             <div className="company-action-list">
-              <button type="button" className="company-action-card">
+              <Link href="/company/places/new" className="company-action-card">
                 <span className="company-action-card__title">
                   Создать новую точку
                 </span>
@@ -78,14 +80,14 @@ export default async function CompanyDashboardPage() {
                   Открывает форму создания адреса, графика, типов отходов и
                   координат.
                 </span>
-              </button>
+              </Link>
 
               <button type="button" className="company-action-card">
                 <span className="company-action-card__title">
                   Импортировать точки
                 </span>
                 <span className="company-action-card__text">
-                  Место под массовую загрузку точек из таблицы или CSV.
+                  Массовое добавление точек из таблицы или CSV.
                 </span>
               </button>
 
@@ -94,7 +96,7 @@ export default async function CompanyDashboardPage() {
                   Обновить статусы
                 </span>
                 <span className="company-action-card__text">
-                  Заготовка под массовое изменение доступности точек.
+                  Быстрое обновление доступности нескольких точек.
                 </span>
               </button>
             </div>
@@ -131,10 +133,7 @@ export default async function CompanyDashboardPage() {
               ) : (
                 <div className="company-empty">
                   <h3>У компании пока нет точек</h3>
-                  <p>
-                    Здесь будет отображаться список пунктов приема после
-                    подключения backend-логики создания.
-                  </p>
+                  <p>После создания точки они появятся здесь в общем списке.</p>
                 </div>
               )}
             </div>

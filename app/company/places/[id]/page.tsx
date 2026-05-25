@@ -46,8 +46,8 @@ export default async function CompanyPlaceDetailsPage({ params }: PageProps) {
             <p className="company-kicker">Управление точкой</p>
             <h1>{place["name"]}</h1>
             <p className="company-subtitle">
-              UI-заготовка для редактирования точки, координат, графика работы,
-              типов отходов и статуса публикации.
+              Изменяйте данные точки, адрес, график работы, типы отходов и
+              статус публикации.
             </p>
           </div>
 
@@ -58,29 +58,34 @@ export default async function CompanyPlaceDetailsPage({ params }: PageProps) {
             >
               Все точки
             </Link>
-
-            <button type="button" className="company-btn company-btn--primary">
-              Сохранить изменения
-            </button>
           </div>
         </section>
 
-        <section className="company-edit-layout">
+        <form className="company-edit-layout">
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Основная информация</h2>
-              <p>Поля для backend-подключения.</p>
+              <p>Основные параметры точки.</p>
             </div>
 
             <div className="company-form-grid">
+              <input
+                type="hidden"
+                name="id"
+                defaultValue={String(place["id"])}
+              />
+
               <label className="company-field">
                 <span>Название точки</span>
-                <input type="text" defaultValue={place["name"]} />
+                <input type="text" name="name" defaultValue={place["name"]} />
               </label>
 
               <label className="company-field">
                 <span>Статус</span>
-                <select defaultValue={place["status"] || "active"}>
+                <select
+                  name="status"
+                  defaultValue={place["status"] || "active"}
+                >
                   <option value="active">active</option>
                   <option value="inactive">inactive</option>
                   <option value="draft">draft</option>
@@ -89,17 +94,25 @@ export default async function CompanyPlaceDetailsPage({ params }: PageProps) {
 
               <label className="company-field company-field--full">
                 <span>Адрес</span>
-                <input type="text" defaultValue={place["adress"]} />
+                <input
+                  type="text"
+                  name="adress"
+                  defaultValue={place["adress"]}
+                />
               </label>
 
               <label className="company-field">
                 <span>График работы</span>
-                <input type="text" defaultValue={place["workhours"]} />
+                <input
+                  type="text"
+                  name="workhours"
+                  defaultValue={place["workhours"]}
+                />
               </label>
 
               <label className="company-field">
                 <span>Тип отходов</span>
-                <input type="text" defaultValue={place["type"]} />
+                <input type="text" name="type" defaultValue={place["type"]} />
               </label>
             </div>
           </article>
@@ -107,36 +120,49 @@ export default async function CompanyPlaceDetailsPage({ params }: PageProps) {
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Координаты и карта</h2>
-              <p>
-                Визуальная зона под будущую интеграцию карты и pin management.
-              </p>
+              <p>Карта и координаты точки.</p>
             </div>
 
             <div className="company-map-placeholder">
               <div className="company-map-placeholder__pin" />
-              <span>
-                Здесь второй разработчик подключит карту и выбор координат
-              </span>
+              <span>Выберите местоположение точки на карте</span>
             </div>
 
             <div className="company-form-grid company-form-grid--compact">
               <label className="company-field">
                 <span>Широта</span>
-                <input type="text" placeholder="Например, 55.751244" />
+                <input
+                  type="text"
+                  name="lat"
+                  placeholder="Например, 55.751244"
+                />
               </label>
 
               <label className="company-field">
                 <span>Долгота</span>
-                <input type="text" placeholder="Например, 37.618423" />
+                <input
+                  type="text"
+                  name="lng"
+                  placeholder="Например, 37.618423"
+                />
               </label>
             </div>
+
+            <div className="company-secondary-actions">
+              <button
+                type="submit"
+                className="company-btn company-btn--primary"
+              >
+                Сохранить изменения
+              </button>
+            </div>
           </article>
-        </section>
+        </form>
 
         <section className="company-panel">
           <div className="company-panel__head">
             <h2>Дополнительные действия</h2>
-            <p>Заготовки под удаление, публикацию и архивирование.</p>
+            <p>Дополнительные действия для этой точки.</p>
           </div>
 
           <div className="company-secondary-actions">
