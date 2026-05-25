@@ -5,7 +5,12 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { getPoints } from "@/app/lib/actions";
 import { WasteType } from '../../shared/types/place';
 
-export default function Map({ selectedFilters }: WasteType, search : string) {
+interface props {
+    selectedFilters: WasteType | "all";
+    search: string;
+}
+
+export default function Map({ selectedFilters, search }: props) {
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map>(null);
     const markers = [];
@@ -25,20 +30,13 @@ export default function Map({ selectedFilters }: WasteType, search : string) {
             });
 
             let points = await getPoints();
-            const filter = selectedFilters;
-            const valid_points = [];
+            let valid_points = points.filter(point => selectedFilters == "all" || point.type == selectedFilters);
+            valid_points = valid_points.filter(point => point["name"].toLowerCase().includes(search.toLowerCase()) || point["adress"].toLowerCase().includes(search.toLowerCase()))
             for (let i = 0; i < points.length; i++) {
-                if (points[i]["type"].search(filter) != -1) {
+                if (points[i]["type"].search(selectedFilters) != -1) {
                     valid_points.push(points[i]);
                 }
             }
-            //points = points.filter((point) => point["name"].toLowerCase().includes(search) || point["adress"].toLowerCase().includes(search),)
-            if (filter == "all" && search==null) {
-                for (let i = 0; i < points.length; i++) {
-                    valid_points.push(points[i]);
-                }
-            }
-
             for (let i = 0; i < valid_points.length; i++) {
                 popups[i] = new maplibregl.Popup({ offset: 25 })
                     .setHTML(`
@@ -66,7 +64,7 @@ export default function Map({ selectedFilters }: WasteType, search : string) {
                 map.current = null;
             }
         };
-    }, [selectedFilters]);
+    }, [selectedFilters, search]);
 
     return (<div ref={mapContainer} style={{ height: '100%', width: '100%' }} />);
 }

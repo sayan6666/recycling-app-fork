@@ -17,8 +17,7 @@ const categoryOptions: Array<WasteType | "all"> = [
 
 export default function CatalogPage() {
   const [items, setItems] = useState<WasteItem[]>([]);
-  const [category, setCategory] = useState<WasteType | "all">("all");
-
+    const [category, setCategory] = useState<WasteType | "all">("all");
   useEffect(() => {
     getCatalog(category).then(setItems);
   }, [category]);
