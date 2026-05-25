@@ -1,7 +1,6 @@
 "use server"
 import { openDb } from "../opendb";
 import { cookies } from "next/headers"
-import { UserProfile } from "@/shared/types"
 
 export async function getPoints() {
     const db = await openDb();

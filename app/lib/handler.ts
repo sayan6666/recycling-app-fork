@@ -19,7 +19,7 @@ export async function handleRegistration(prevstate: any, formData: FormData) {
         return {
             errors: {
                 name: validatedData.error.flatten().fieldErrors?.name,
-                name: validatedData.error.flatten().fieldErrors?.surname,
+                surname: validatedData.error.flatten().fieldErrors?.surname,
                 email: validatedData.error.flatten().fieldErrors?.email,
                 password: validatedData.error.flatten().fieldErrors?.password,
                 password_repeat: validatedData.error.flatten().fieldErrors?.password_repeat
@@ -53,7 +53,12 @@ export async function handleRegistration(prevstate: any, formData: FormData) {
         }
     }
     await db.run("INSERT INTO users (name,email,password) VALUES (?, ?, ?)", [validatedData.data.name + " " + validatedData.data.surname, validatedData.data.email, validatedData.data.password]);
+    const expires = new Date(Date.now() + 10 * 100000);
+    const cookieStore = await cookies();
+    const user = await db.get("SELECT * FROM users WHERE email=?", validatedData.data.email);
+    cookieStore.set("session", user["email"] + "_user", { expires, httpOnly: true });
     await db.close();
+    redirect("/profile");
     return
     {
         success: "ok"
