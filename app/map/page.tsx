@@ -1,10 +1,10 @@
-"use client";
-
+"use client"
 import Link from "next/link";
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import { getPlaces } from "@/shared/api/places";
 import type { Place, WasteType } from "@/shared/types/place";
+import { getPoints } from "@/app/lib/actions"
 
 const wasteOptions: Array<WasteType | "all"> = [
   "all",
@@ -39,7 +39,6 @@ export default function MapPage() {
   useEffect(() => {
     getPlaces({ search, wasteType }).then(setPlaces);
   }, [search, wasteType]);
-
   return (
     <section>
       <h1>Карта пунктов приёма</h1>
@@ -70,22 +69,6 @@ export default function MapPage() {
 
           <div style={{ width: 1000, height: 1000, marginBottom: 20, padding: 16, background: "#f5f5f5" }}>
               <Map selectedFilters={wasteType} search={search} />
-      </div>
-
-      <div style={{ display: "grid", gap: 12 }}>
-        {places.map((place) => (
-          <article
-            key={place.id}
-            style={{ border: "1px solid #ddd", padding: 16, borderRadius: 8 }}
-          >
-            <h3>{place.name}</h3>
-            <p>{place.address}</p>
-            <p>Принимает: {place.wasteTypes.join(", ")}</p>
-            <Link href={`/place/${place.id}`}>Открыть карточку точки</Link>
-          </article>
-        ))}
-
-        {places.length === 0 && <p>По вашему запросу ничего не найдено.</p>}
       </div>
     </section>
   );

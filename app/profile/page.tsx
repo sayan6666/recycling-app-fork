@@ -2,9 +2,7 @@ import { openDb } from "../opendb"
 import { getProfile, getSession } from "@/app/lib/actions"
 import { UserProfile } from "@/shared/types"
 
-const profile = await getProfile();
-
-export default function ProfilePage() {
+export default async function ProfilePage() {
   const reminders = [
     "Сдать макулатуру",
     "Сдать стекло",
@@ -27,7 +25,11 @@ export default function ProfilePage() {
       date: "27.04.2026",
       status: "Запланировано",
     },
-  ];
+    ];
+    let profile = await getProfile();
+    if (profile == null) {
+        profile = [[{"name":"","email":""}]]
+    }
   return (
     <main className="eco-profile-page">
       <div className="eco-profile-container">

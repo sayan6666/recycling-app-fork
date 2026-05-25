@@ -9,6 +9,7 @@ export default function Map({ selectedFilters }: WasteType, search : string) {
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map>(null);
     const markers = [];
+    const popups = [];
     useEffect(() => {
         if (!mapContainer.current || map.current) return;
 
@@ -39,7 +40,21 @@ export default function Map({ selectedFilters }: WasteType, search : string) {
             }
 
             for (let i = 0; i < valid_points.length; i++) {
-                markers[i] = new maplibregl.Marker().setLngLat([valid_points[i]["x"], valid_points[i]["y"]]).addTo(map.current);
+                popups[i] = new maplibregl.Popup({ offset: 25 })
+                    .setHTML(`
+                    <article
+            key=${valid_points[i]["id"]}
+            style={{ border: "1px solid #ddd", padding: 16, borderRadius: 8 }}
+            >
+            <h3>${valid_points[i]["name"]}</h3>
+            <p>${valid_points[i]["adress"]}</p>
+            <p>Types: ${valid_points[i]["type"]}</p>
+            <a href=/place/${valid_points[i]["id"].toString()}>Open point card</a>
+            </article>`);
+            }
+
+            for (let i = 0; i < valid_points.length; i++) {
+                markers[i] = new maplibregl.Marker().setLngLat([valid_points[i]["y"], valid_points[i]["x"]]).setPopup(popups[i]).addTo(map.current);
             }
         };
 
