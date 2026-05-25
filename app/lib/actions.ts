@@ -24,3 +24,19 @@ export async function getProfile() {
     }
     return profile;
 }
+
+export async function getCompanySession() {
+    const nextCookies = await cookies();
+    const companySession = nextCookies.get("companySession")?.value;
+    return companySession ? companySession : null;
+}
+
+export async function getCompany() {
+    const companySession = await getCompanySession();
+    const db = await openDb();
+    let company = null;
+    if (companySession != null) {
+        company = await db.all("SELECT * FROM companies WHERE email=?", companySession);
+    }
+    return company;
+}
