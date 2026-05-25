@@ -19,7 +19,7 @@ export async function handleRegistration(prevstate: any, formData: FormData) {
         return {
             errors: {
                 name: validatedData.error.flatten().fieldErrors?.name,
-                name: validatedData.error.flatten().fieldErrors?.surname,
+                surname: validatedData.error.flatten().fieldErrors?.surname,
                 email: validatedData.error.flatten().fieldErrors?.email,
                 password: validatedData.error.flatten().fieldErrors?.password,
                 password_repeat: validatedData.error.flatten().fieldErrors?.password_repeat
