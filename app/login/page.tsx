@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import Link from "next/link";
-import { handleLogin } from "@/app/lib/handler"
-import { useActionState } from "react"
+import { handleLogin } from "@/app/lib/handler";
+import { useActionState } from "react";
 
 const initialState = {
-    success: "",
-    errors: {
-        email: "",
-        password: "",
-    }
+  errors: {
+    email: undefined as string[] | undefined,
+    password: undefined as string[] | undefined,
+  },
 };
 
 export default function LoginPage() {
@@ -22,9 +21,19 @@ export default function LoginPage() {
 
         <h1 className="auth-heading">Вход</h1>
 
-              <form className="auth-form" action={formAction}>
-          <input type="email" name="email" placeholder="Email" className="auth-field" />
-          <input type="password" name="password" placeholder="Пароль" className="auth-field" />
+        <form className="auth-form" action={formAction}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="auth-field"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            className="auth-field"
+          />
 
           <button type="submit" className="auth-primary-btn">
             Войти
