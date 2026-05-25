@@ -1,6 +1,22 @@
+"use client"
 import Link from "next/link";
+import { handlePointAdding } from "../../../lib/handler";
+import { useActionState } from "react"
+
+const initialState = {
+    errors: {
+        name: "",
+        status: "",
+        adress: "",
+        workhours: "",
+        type: "",
+        x: 0,
+        y: 0,
+    },
+};
 
 export default function CompanyCreatePlacePage() {
+  const [state, formAction] = useActionState(handlePointAdding, initialState);
   return (
     <main className="company-page">
       <div className="company-container">
@@ -24,7 +40,7 @@ export default function CompanyCreatePlacePage() {
           </div>
         </section>
 
-        <form className="company-edit-layout">
+              <form className="company-edit-layout" action={formAction}>
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Основная информация</h2>
@@ -95,7 +111,7 @@ export default function CompanyCreatePlacePage() {
                 <span>Широта</span>
                 <input
                   type="text"
-                  name="lat"
+                  name="x"
                   placeholder="Например, 55.751244"
                 />
               </label>
@@ -104,7 +120,7 @@ export default function CompanyCreatePlacePage() {
                 <span>Долгота</span>
                 <input
                   type="text"
-                  name="lng"
+                  name="y"
                   placeholder="Например, 37.618423"
                 />
               </label>

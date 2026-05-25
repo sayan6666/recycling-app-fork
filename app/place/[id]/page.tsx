@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { getPlaceById } from "@/shared/api/places";
 import { getPoints } from "@/app/lib/actions"
 
 export default async function PlacePage({
@@ -8,9 +7,8 @@ export default async function PlacePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const place = await getPlaceById(id);
   const points = await getPoints();
-  if (!place) {
+  if (!points[id-1]) {
     notFound();
   }
     
@@ -27,10 +25,10 @@ export default async function PlacePage({
               <strong>Контакты:</strong> {points[id-1]["contacts"] ?? "Не указаны"}
       </p>
       <p>
-              <strong>Описание:</strong> {points[id-1]["description"] ?? "Нет описания"}
+              <strong>Описание:</strong> {points[id - 1]["description"] ?? "Нет описания"}
       </p>
       <p>
-        <strong>Принимаемые отходы:</strong> {points[id]-1["type"]}
+        <strong>Принимаемые отходы:</strong> {points[id-1]["type"]}
       </p>
       <p>
               <strong>Координаты:</strong> {points[id-1]["x"]}, {points[id-1]["y"]}
