@@ -3,6 +3,7 @@ import { openDb } from "../opendb";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { getCompany } from "./actions";
 
 const regSchema = z.object({
   name: z.string().min(1, { message: "name" }),
@@ -145,4 +146,30 @@ export async function handleLogin(prevState: any, formData: FormData) {
   {
     success: "ok";
   }
+}
+
+const pointSchema = z.object({
+    x: z.coerce.number(),
+    y: z.coerce.number(),
+    type: z.string(),
+    name: z.string(),
+    adress: z.string(),
+    workhours: z.string(),
+    status: z.string()
+});
+
+export async function handlePointAdding(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = pointSchema.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const db = await openDb();
+    const company = await getCompany();
+    await db.run("INSERT INTO points(x,y,type,company_id,name,adress,contacts,workhours,description,status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [validatedData.data.x, validatedData.data.y, validatedData.data.type,
+    company[0]["id"], validatedData.data.name, validatedData.data.adress,
+        "+7", validatedData.data.workhours, "", validatedData.data.status]);
+    await db.close;
 }

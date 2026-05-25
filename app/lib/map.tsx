@@ -47,7 +47,7 @@ export default function Map({ selectedFilters, search }: props) {
             <h3>${valid_points[i]["name"]}</h3>
             <p>${valid_points[i]["adress"]}</p>
             <p>Types: ${valid_points[i]["type"]}</p>
-            <a href=/place/${valid_points[i]["id"].toString()}>Open point card</a>
+            <a href=/place/${(valid_points[i]["id"]).toString()}>Open point card</a>
             </article>`);
             }
 
