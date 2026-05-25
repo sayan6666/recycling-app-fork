@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getProfile, getSession } from "@/app/lib/actions";
 
-export default async function ProfileHistoryPage() {
+export default async function ProfileSettingsPage() {
   const session = await getSession();
   const profile = session ? await getProfile() : null;
   const user = Array.isArray(profile) && profile.length > 0 ? profile[0] : null;
@@ -13,7 +13,9 @@ export default async function ProfileHistoryPage() {
           <section className="eco-profile-empty">
             <div className="eco-profile-empty-card">
               <h2>Нужно войти в аккаунт</h2>
-              <p>История доступна только авторизованным пользователям.</p>
+              <p>
+                Настройки аккаунта доступны только авторизованным пользователям.
+              </p>
 
               <div className="eco-profile-empty-actions">
                 <Link
@@ -46,7 +48,7 @@ export default async function ProfileHistoryPage() {
             </div>
 
             <div className="eco-profile-user">
-              <p className="eco-profile-kicker">История</p>
+              <p className="eco-profile-kicker">Настройки</p>
               <h1>{user.name}</h1>
               <p className="eco-profile-email">{user.email}</p>
             </div>
@@ -64,14 +66,40 @@ export default async function ProfileHistoryPage() {
 
         <section className="eco-panel eco-profile-form-panel">
           <div className="eco-panel-head">
-            <h2 className="eco-section-title">Выполненные напоминания</h2>
+            <h2 className="eco-section-title">Данные аккаунта</h2>
           </div>
 
-          <div className="eco-history-list">
-            <div className="eco-profile-empty-inline">
-              <p>Выполненные напоминания будут отображаться здесь.</p>
+          <form className="eco-profile-form">
+            <label className="eco-field">
+              <span>Логин</span>
+              <input type="text" name="login" defaultValue={user.email ?? ""} />
+            </label>
+
+            <label className="eco-field">
+              <span>Пароль</span>
+              <input type="password" name="password" defaultValue="" />
+            </label>
+
+            <label className="eco-field">
+              <span>Имя</span>
+              <input
+                type="text"
+                name="first_name"
+                defaultValue={user.name ?? ""}
+              />
+            </label>
+
+            <label className="eco-field">
+              <span>Фамилия</span>
+              <input type="text" name="last_name" defaultValue="" />
+            </label>
+
+            <div className="eco-form-actions">
+              <button type="submit" className="eco-btn eco-btn-primary">
+                Сохранить настройки
+              </button>
             </div>
-          </div>
+          </form>
         </section>
       </div>
     </main>

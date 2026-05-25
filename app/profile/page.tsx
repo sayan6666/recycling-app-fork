@@ -2,32 +2,10 @@ import Link from "next/link";
 import { getProfile, getSession } from "@/app/lib/actions";
 
 export default async function ProfilePage() {
-  const reminders = [
-    "Сдать макулатуру",
-    "Сдать стекло",
-    "Проверить ближайшие пункты приема",
-  ];
-
-  const history = [
-    {
-      title: "Сданы пластиковые бутылки",
-      date: "02.05.2026",
-      status: "Выполнено",
-    },
-    {
-      title: "Посещение ЭкоПункт Центральный",
-      date: "29.04.2026",
-      status: "Завершено",
-    },
-    {
-      title: "Запланирована сдача стекла",
-      date: "27.04.2026",
-      status: "Запланировано",
-    },
-  ];
   const session = await getSession();
   const profile = session ? await getProfile() : null;
   const user = Array.isArray(profile) && profile.length > 0 ? profile[0] : null;
+
   return (
     <main className="eco-profile-page">
       <div className="eco-profile-container">
@@ -59,10 +37,18 @@ export default async function ProfilePage() {
           <div className="eco-profile-actions">
             {user ? (
               <>
-                <button className="eco-btn eco-btn-secondary">
+                <Link
+                  href="/profile/edit"
+                  className="eco-btn eco-btn-secondary eco-btn-link"
+                >
                   Редактировать профиль
-                </button>
-                <button className="eco-btn eco-btn-primary">Настройки</button>
+                </Link>
+                <Link
+                  href="/profile/settings"
+                  className="eco-btn eco-btn-primary eco-btn-link"
+                >
+                  Настройки
+                </Link>
               </>
             ) : (
               <>
@@ -90,18 +76,18 @@ export default async function ProfilePage() {
 
               <div className="eco-stats-grid">
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">12 кг</span>
+                  <span className="eco-stat-value">—</span>
                   <span className="eco-stat-label">Сдано за месяц</span>
                 </article>
 
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">7</span>
+                  <span className="eco-stat-value">—</span>
                   <span className="eco-stat-label">Пунктов посещено</span>
                 </article>
 
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">3</span>
-                  <span className="eco-stat-label">Активных напоминания</span>
+                  <span className="eco-stat-value">—</span>
+                  <span className="eco-stat-label">Активных напоминаний</span>
                 </article>
               </div>
             </section>
@@ -113,15 +99,16 @@ export default async function ProfilePage() {
                 </div>
 
                 <div className="eco-reminders-list">
-                  {reminders.map((item) => (
-                    <div key={item} className="eco-reminder-item">
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                  <div className="eco-profile-empty-inline">
+                    <p>Активные напоминания появятся здесь.</p>
+                  </div>
 
-                  <button className="eco-btn eco-btn-primary eco-panel-btn">
+                  <Link
+                    href="/profile/reminders/new"
+                    className="eco-btn eco-btn-primary eco-btn-link eco-panel-btn"
+                  >
                     Добавить напоминание
-                  </button>
+                  </Link>
                 </div>
               </article>
 
@@ -131,24 +118,17 @@ export default async function ProfilePage() {
                 </div>
 
                 <div className="eco-history-list">
-                  {history.map((item) => (
-                    <div
-                      key={`${item.title}-${item.date}`}
-                      className="eco-history-item"
-                    >
-                      <div>
-                        <h3>{item.title}</h3>
-                        <p>{item.date}</p>
-                      </div>
-
-                      <span className="eco-history-badge">{item.status}</span>
-                    </div>
-                  ))}
+                  <div className="eco-profile-empty-inline">
+                    <p>История выполненных напоминаний появится здесь.</p>
+                  </div>
                 </div>
 
-                <button className="eco-btn eco-btn-secondary eco-panel-btn">
+                <Link
+                  href="/profile/history"
+                  className="eco-btn eco-btn-secondary eco-btn-link eco-panel-btn"
+                >
                   Открыть всю историю
-                </button>
+                </Link>
               </article>
             </section>
           </>
