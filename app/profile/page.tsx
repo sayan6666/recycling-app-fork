@@ -98,18 +98,66 @@ export default async function ProfilePage() {
                   <h2 className="eco-section-title">Напоминания</h2>
                 </div>
 
-                <div className="eco-reminders-list">
-                  <div className="eco-profile-empty-inline">
-                    <p>Активные напоминания появятся здесь.</p>
-                  </div>
+                <form className="eco-reminders-form">
+                  <fieldset className="eco-reminders-group">
+                    <legend className="eco-reminders-legend">
+                      Выберите выполненные напоминания
+                    </legend>
 
-                  <Link
-                    href="/profile/reminders/new"
-                    className="eco-btn eco-btn-primary eco-btn-link eco-panel-btn"
-                  >
-                    Добавить напоминание
-                  </Link>
-                </div>
+                    <label className="eco-reminder-check">
+                      <input
+                        type="checkbox"
+                        name="completed_reminders"
+                        value="paper"
+                      />
+                      <span className="eco-reminder-check__content">
+                        <strong>Сдать макулатуру</strong>
+                        <small>Отметьте после сдачи бумаги или картона.</small>
+                      </span>
+                    </label>
+
+                    <label className="eco-reminder-check">
+                      <input
+                        type="checkbox"
+                        name="completed_reminders"
+                        value="glass"
+                      />
+                      <span className="eco-reminder-check__content">
+                        <strong>Сдать стекло</strong>
+                        <small>
+                          Подходит для бутылок, банок и стеклянной тары.
+                        </small>
+                      </span>
+                    </label>
+
+                    <label className="eco-reminder-check">
+                      <input
+                        type="checkbox"
+                        name="completed_reminders"
+                        value="places"
+                      />
+                      <span className="eco-reminder-check__content">
+                        <strong>Проверить ближайшие пункты приёма</strong>
+                        <small>
+                          Используйте, если уже нашли подходящую точку.
+                        </small>
+                      </span>
+                    </label>
+                  </fieldset>
+
+                  <div className="eco-form-actions">
+                    <button type="submit" className="eco-btn eco-btn-primary">
+                      Отметить выполненными
+                    </button>
+
+                    <Link
+                      href="/profile/reminders/new"
+                      className="eco-btn eco-btn-secondary eco-btn-link"
+                    >
+                      Добавить напоминание
+                    </Link>
+                  </div>
+                </form>
               </article>
 
               <article className="eco-panel">
@@ -119,7 +167,7 @@ export default async function ProfilePage() {
 
                 <div className="eco-history-list">
                   <div className="eco-profile-empty-inline">
-                    <p>История выполненных напоминаний появится здесь.</p>
+                    <p>Здесь будут отображаться выполненные напоминания.</p>
                   </div>
                 </div>
 

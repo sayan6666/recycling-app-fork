@@ -97,13 +97,6 @@ export default async function CompanyPlacesPage() {
                   >
                     Открыть управление
                   </Link>
-
-                  <button
-                    type="button"
-                    className="company-btn company-btn--ghost"
-                  >
-                    Изменить статус
-                  </button>
                 </div>
               </article>
             ))
