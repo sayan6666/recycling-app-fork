@@ -196,7 +196,28 @@ export async function handlePointChange(prevState: any, formData: FormData) {
     const db = await openDb();
     await db.run("UPDATE points SET x=?, y=?, type=?, name=?, adress=?, workhours=?, status=? WHERE id=?", [validatedData.data.x, validatedData.data.y, validatedData.data.type,
         validatedData.data.name, validatedData.data.adress, validatedData.data.workhours, validatedData.data.status, validatedData.data.id]);
-    console.log(validatedData.data);
-    redirect("/company/places");
     await db.close();
+    redirect("/company/places");
+}
+
+const profileSchema = z.object({
+    email: z.string(),
+    password: z.string(),
+    surname: z.string(),
+    name: z.string(),
+});
+
+export async function handleSettingChange(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = profileSchema.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const prev_email = validatedData.data.email;
+    const db = await openDb();
+    await db.run("UPDATE users SET name=?, surname=?, email=?, password=? WHERE email=?", [validatedData.data.name, validatedData.data.surname, validatedData.data.email, validatedData.data.password, prev_email]);
+    await db.close();
+    redirect("/profile");
 }
