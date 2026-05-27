@@ -221,3 +221,24 @@ export async function handleSettingChange(prevState: any, formData: FormData) {
     await db.close();
     redirect("/profile");
 }
+
+const profileSchema2 = z.object({
+    recycled: z.coerce.number(),
+    visited: z.coerce.number(),
+    reminders: z.coerce.number(),
+    email: z.string(),
+});
+
+export async function handleEdit(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = profileSchema2.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const db = await openDb();
+    await db.run("UPDATE users SET recycled=?, visited=?, reminders=? WHERE email=?", [validatedData.data.recycled, validatedData.data.visited, validatedData.data.reminders, validatedData.data.email]);
+    await db.close();
+    redirect("/profile");
+}
