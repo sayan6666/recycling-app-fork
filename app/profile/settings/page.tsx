@@ -49,7 +49,7 @@ export default async function ProfileSettingsPage() {
 
             <div className="eco-profile-user">
               <p className="eco-profile-kicker">Настройки</p>
-              <h1>{user.name}</h1>
+                          <h1>{user.name} {user.surname}</h1>
               <p className="eco-profile-email">{user.email}</p>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default async function ProfileSettingsPage() {
 
             <label className="eco-field">
               <span>Пароль</span>
-              <input type="password" name="password" defaultValue="" />
+                          <input type="password" name="password" defaultValue={user.password ?? ""} />
             </label>
 
             <label className="eco-field">
@@ -91,7 +91,7 @@ export default async function ProfileSettingsPage() {
 
             <label className="eco-field">
               <span>Фамилия</span>
-              <input type="text" name="last_name" defaultValue="" />
+                          <input type="text" name="last_name" defaultValue={user.surname ?? ""} />
             </label>
 
             <div className="eco-form-actions">

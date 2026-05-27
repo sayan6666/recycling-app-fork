@@ -20,7 +20,7 @@ export default async function ProfilePage() {
 
               {user ? (
                 <>
-                  <h1>{user.name}</h1>
+                  <h1>{user.name} {user.surname}</h1>
                   <p className="eco-profile-email">{user.email}</p>
                 </>
               ) : (
@@ -76,17 +76,17 @@ export default async function ProfilePage() {
 
               <div className="eco-stats-grid">
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">—</span>
+                                  <span className="eco-stat-value">{user.recycled}</span>
                   <span className="eco-stat-label">Сдано за месяц</span>
                 </article>
 
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">—</span>
+                                  <span className="eco-stat-value">{user.visited}</span>
                   <span className="eco-stat-label">Пунктов посещено</span>
                 </article>
 
                 <article className="eco-stat-card">
-                  <span className="eco-stat-value">—</span>
+                                  <span className="eco-stat-value">{user.reminders}</span>
                   <span className="eco-stat-label">Активных напоминаний</span>
                 </article>
               </div>

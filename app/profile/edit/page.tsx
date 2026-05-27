@@ -50,7 +50,7 @@ export default async function ProfileEditPage() {
 
             <div className="eco-profile-user">
               <p className="eco-profile-kicker">Редактирование профиля</p>
-              <h1>{user.name}</h1>
+                          <h1>{user.name} {user.surname}</h1>
               <p className="eco-profile-email">{user.email}</p>
             </div>
           </div>
@@ -74,27 +74,27 @@ export default async function ProfileEditPage() {
             <label className="eco-field">
               <span>Сдано кг за месяц</span>
               <input
-                type="text"
-                name="monthly_kg"
-                placeholder="Введите значение"
+                              type="text"
+                              name="monthly_kg"
+                              defaultValue={user.recycled}
               />
             </label>
 
             <label className="eco-field">
               <span>Пунктов посещено</span>
               <input
-                type="text"
-                name="visited_points"
-                placeholder="Введите значение"
+                              type="text"
+                              name="visited_points"
+                              defaultValue={user.visited}
               />
             </label>
 
             <label className="eco-field">
               <span>Активных напоминаний</span>
               <input
-                type="text"
-                name="active_reminders"
-                placeholder="Введите значение"
+                              type="text"
+                              name="active_reminders"
+                              defaultValue={user.reminders}
               />
             </label>
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getPoints, getCompany } from "@/app/lib/actions";
-import CompanyPlaceDetailsClient from "@/app/company/places/[id]/CompanyPlaceDetailsClient";
+import CompanyPlaceDetailsPage from "../company/places/[id]/page";
 
 type PageProps = {
     params: Promise<{ id: string }>;
@@ -23,15 +23,15 @@ export default async function placeInfoSetup({ params }: PageProps) {
             <main className="company-page">
                 <div className="company-container">
                     <section className="company-empty company-empty--wide">
-                        <h1>Point not found</h1>
+                        <h1>Точка не найдена</h1>
                         <p>
-                            Potentially was deleted, or does not belong to this company.
+                            Возможно, точка была удалена или не принадлежит текущей компании.
                         </p>
                         <Link
                             href="/company/places"
                             className="company-btn company-btn--secondary"
                         >
-                            Go back to list
+                            Вернуться к списку
                         </Link>
                     </section>
                 </div>
@@ -39,5 +39,5 @@ export default async function placeInfoSetup({ params }: PageProps) {
         );
     }
 
-    return <CompanyPlaceDetailsClient place={place}/>
+    return <CompanyPlaceDetailsCkient place={place}/>
 }
