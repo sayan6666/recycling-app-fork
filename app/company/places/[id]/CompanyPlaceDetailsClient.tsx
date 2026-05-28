@@ -1,8 +1,8 @@
 "use client"
 import Link from "next/link";
 import dynamic from 'next/dynamic';
-import { handlePointAdding } from "../../../lib/handler";
 import { useActionState } from "react"
+import { handlePointChange } from "@/app/lib/handler"
 
 const Map = dynamic(() => import("@/app/lib/map_coords"), {
     ssr: false,
@@ -20,8 +20,22 @@ const Map = dynamic(() => import("@/app/lib/map_coords"), {
     )
 });
 
+type Props = {
+    place: {
+        id: number;
+        name: string;
+        status: string;
+        adress: string;
+        workhours: string;
+        type: string;
+        x: string;
+        y: string;
+    };
+};
+
 const initialState = {
     errors: {
+        id: "",
         name: "",
         status: "",
         adress: "",
@@ -32,18 +46,18 @@ const initialState = {
     },
 };
 
-export default function CompanyCreatePlacePage() {
-  const [state, formAction] = useActionState(handlePointAdding, initialState);
+export default function CompanyPlaceDetailsClient({ place }: Props) {
+  const [state, formAction] = useActionState(handlePointChange, initialState);
   return (
     <main className="company-page">
       <div className="company-container">
         <section className="company-section-head">
           <div>
-            <p className="company-kicker">Новая точка</p>
-            <h1>Создание точки</h1>
+            <p className="company-kicker">Управление точкой</p>
+            <h1>{place["name"]}</h1>
             <p className="company-subtitle">
-              Заполните основную информацию о новой точке приема и укажите ее
-              местоположение.
+              Изменяйте данные точки, адрес, график работы, типы отходов и
+              статус публикации.
             </p>
           </div>
 
@@ -52,7 +66,7 @@ export default function CompanyCreatePlacePage() {
               href="/company/places"
               className="company-btn company-btn--secondary"
             >
-              К списку точек
+              Все точки
             </Link>
           </div>
         </section>
@@ -61,25 +75,30 @@ export default function CompanyCreatePlacePage() {
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Основная информация</h2>
-              <p>Основная информация о новой точке.</p>
+              <p>Основные параметры точки.</p>
             </div>
 
             <div className="company-form-grid">
+              <input
+                type="hidden"
+                name="id"
+                defaultValue={String(place["id"])}
+              />
+
               <label className="company-field">
                 <span>Название точки</span>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Например, Пункт приема EcoRoute"
-                />
+                <input type="text" name="name" defaultValue={place["name"]} />
               </label>
 
               <label className="company-field">
                 <span>Статус</span>
-                <select name="status" defaultValue="draft">
-                  <option value="draft">draft</option>
+                <select
+                  name="status"
+                  defaultValue={place["status"] || "active"}
+                >
                   <option value="active">active</option>
                   <option value="inactive">inactive</option>
+                  <option value="draft">draft</option>
                 </select>
               </label>
 
@@ -88,7 +107,7 @@ export default function CompanyCreatePlacePage() {
                 <input
                   type="text"
                   name="adress"
-                  placeholder="Введите адрес точки"
+                  defaultValue={place["adress"]}
                 />
               </label>
 
@@ -97,17 +116,13 @@ export default function CompanyCreatePlacePage() {
                 <input
                   type="text"
                   name="workhours"
-                  placeholder="Например, 09:00 - 20:00"
+                  defaultValue={place["workhours"]}
                 />
               </label>
 
               <label className="company-field">
-                <span>Типы отходов</span>
-                <input
-                  type="text"
-                  name="type"
-                  placeholder="Пластик, стекло, бумага"
-                />
+                <span>Тип отходов</span>
+                <input type="text" name="type" defaultValue={place["type"]} />
               </label>
             </div>
           </article>
@@ -115,20 +130,20 @@ export default function CompanyCreatePlacePage() {
           <article className="company-panel">
             <div className="company-panel__head">
               <h2>Координаты и карта</h2>
-              <p>Укажите координаты и местоположение точки.</p>
+              <p>Карта и координаты точки.</p>
             </div>
 
-                      <div className="company-map-placeholder">
-                 <Map/>
+            <div className="company-map-placeholder">
+              <Map/>
             </div>
 
             <div className="company-form-grid company-form-grid--compact">
               <label className="company-field">
                 <span>Широта</span>
                 <input
-                  type="text"
-                  name="x"
-                  placeholder="Например, 55.751244"
+                type="text"
+                name="x"
+                defaultValue={place["x"]}
                 />
               </label>
 
@@ -137,7 +152,7 @@ export default function CompanyCreatePlacePage() {
                 <input
                   type="text"
                   name="y"
-                  placeholder="Например, 37.618423"
+                  defaultValue={place["y"]}
                 />
               </label>
             </div>
@@ -147,11 +162,32 @@ export default function CompanyCreatePlacePage() {
                 type="submit"
                 className="company-btn company-btn--primary"
               >
-                Создать точку
+                Сохранить изменения
               </button>
             </div>
           </article>
         </form>
+
+        <section className="company-panel">
+          <div className="company-panel__head">
+            <h2>Дополнительные действия</h2>
+            <p>Дополнительные действия для этой точки.</p>
+          </div>
+
+          <div className="company-secondary-actions">
+            <button type="button" className="company-btn company-btn--ghost">
+              Отправить на модерацию
+            </button>
+
+            <button type="button" className="company-btn company-btn--ghost">
+              Снять с публикации
+            </button>
+
+            <button type="button" className="company-btn company-btn--danger">
+              Удалить точку
+            </button>
+          </div>
+        </section>
       </div>
     </main>
   );

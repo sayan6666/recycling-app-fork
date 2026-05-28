@@ -19,7 +19,7 @@ export async function getProfile() {
     const db = await openDb();
     let profile = null;
     if (sessionType != null) {
-        profile = await db.all("SELECT name, email FROM " + sessionType.split("_")[1] + "s WHERE email=?", sessionType.split("_")[0]);
+        profile = await db.all("SELECT name, surname, email, password, visited, recycled, reminders FROM " + sessionType.split("_")[1] + "s WHERE email=?", sessionType.split("_")[0]);
     }
     return profile;
 }

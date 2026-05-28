@@ -3,7 +3,7 @@ import { openDb } from "../opendb";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { getCompany } from "./actions";
+import { getCompany, getPoints } from "./actions";
 
 const regSchema = z.object({
   name: z.string().min(1, { message: "name" }),
@@ -172,4 +172,73 @@ export async function handlePointAdding(prevState: any, formData: FormData) {
     company[0]["id"], validatedData.data.name, validatedData.data.adress,
         "+7", validatedData.data.workhours, "", validatedData.data.status]);
     await db.close;
+}
+
+const pointSchema2 = z.object({
+    id: z.coerce.number(),
+    x: z.coerce.number(),
+    y: z.coerce.number(),
+    type: z.string(),
+    name: z.string(),
+    adress: z.string(),
+    workhours: z.string(),
+    status: z.string()
+});
+
+export async function handlePointChange(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = pointSchema2.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const db = await openDb();
+    await db.run("UPDATE points SET x=?, y=?, type=?, name=?, adress=?, workhours=?, status=? WHERE id=?", [validatedData.data.x, validatedData.data.y, validatedData.data.type,
+        validatedData.data.name, validatedData.data.adress, validatedData.data.workhours, validatedData.data.status, validatedData.data.id]);
+    await db.close();
+    redirect("/company/places");
+}
+
+const profileSchema = z.object({
+    email: z.string(),
+    password: z.string(),
+    surname: z.string(),
+    name: z.string(),
+});
+
+export async function handleSettingChange(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = profileSchema.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const prev_email = validatedData.data.email;
+    const db = await openDb();
+    await db.run("UPDATE users SET name=?, surname=?, email=?, password=? WHERE email=?", [validatedData.data.name, validatedData.data.surname, validatedData.data.email, validatedData.data.password, prev_email]);
+    await db.close();
+    redirect("/profile");
+}
+
+const profileSchema2 = z.object({
+    recycled: z.coerce.number(),
+    visited: z.coerce.number(),
+    reminders: z.coerce.number(),
+    email: z.string(),
+});
+
+export async function handleEdit(prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const validatedData = profileSchema2.safeParse(data);
+    if (!validatedData.success) {
+        return {
+            error: "error"
+        }
+    }
+    const db = await openDb();
+    await db.run("UPDATE users SET recycled=?, visited=?, reminders=? WHERE email=?", [validatedData.data.recycled, validatedData.data.visited, validatedData.data.reminders, validatedData.data.email]);
+    await db.close();
+    redirect("/profile");
 }
