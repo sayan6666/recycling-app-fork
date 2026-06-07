@@ -4,14 +4,15 @@ import { useActionState } from "react"
 import { handleRegistration } from "@/app/lib/handler"
 
 const initialState = {
-    success: "",
+    error: ""
+    /*success: "",
     errors: {
         name: "",
         surname: "",
         email: "",
         password: "",
         password_repeat: "",
-    }
+    }*/
 };
 
 export default function RegisterPage() {
