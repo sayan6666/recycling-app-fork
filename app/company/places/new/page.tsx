@@ -21,7 +21,8 @@ const Map = dynamic(() => import("@/app/lib/map_coords"), {
 });
 
 const initialState = {
-    errors: {
+    error: ""
+    /*errors: {
         name: "",
         status: "",
         adress: "",
@@ -29,7 +30,7 @@ const initialState = {
         type: "",
         x: 0,
         y: 0,
-    },
+    },*/
 };
 
 export default function CompanyCreatePlacePage() {
