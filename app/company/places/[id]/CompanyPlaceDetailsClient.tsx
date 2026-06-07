@@ -34,7 +34,8 @@ type Props = {
 };
 
 const initialState = {
-    errors: {
+    error: ""
+    /*errors: {
         id: "",
         name: "",
         status: "",
@@ -43,7 +44,7 @@ const initialState = {
         type: "",
         x: 0,
         y: 0,
-    },
+    },*/
 };
 
 export default function CompanyPlaceDetailsClient({ place }: Props) {
