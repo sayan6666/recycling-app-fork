@@ -16,12 +16,13 @@ type Props = {
 };
 
 const initialState = {
-    errors: {
+    error: ""
+    /*errors: {
         recycled: 0,
         visited: 0,
         reminders: 0,
         email: ""
-    },
+    },*/
 };
 export function ProfileEditPage({ user }: Props) {
     const [state, formAction] = useActionState(handleEdit, initialState);
