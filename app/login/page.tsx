@@ -4,10 +4,11 @@ import { handleLogin } from "@/app/lib/handler";
 import { useActionState } from "react";
 
 const initialState = {
-  errors: {
+  error: ""
+  /*errors: {
     email: undefined as string[] | undefined,
     password: undefined as string[] | undefined,
-  },
+  },*/
 };
 
 export default function LoginPage() {
