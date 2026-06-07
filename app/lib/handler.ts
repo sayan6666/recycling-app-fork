@@ -168,10 +168,12 @@ export async function handlePointAdding(prevState: any, formData: FormData) {
     }
     const db = await openDb();
     const company = await getCompany();
+    if (company) {
     await db.run("INSERT INTO points(x,y,type,company_id,name,adress,contacts,workhours,description,status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [validatedData.data.x, validatedData.data.y, validatedData.data.type,
     company[0]["id"], validatedData.data.name, validatedData.data.adress,
         "+7", validatedData.data.workhours, "", validatedData.data.status]);
     await db.close;
+    }
 }
 
 const pointSchema2 = z.object({
