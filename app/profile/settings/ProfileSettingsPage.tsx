@@ -16,12 +16,13 @@ type Props = {
 };
 
 const initialState = {
-    errors: {
+    error: ""
+    /*errors: {
         email: "",
         password: "",
         name: "",
         surname: "",
-    },
+    },*/
 };
 
 export function ProfileSettingsPage({ user }: Props) {
